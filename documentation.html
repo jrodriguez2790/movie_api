@@ -7,9 +7,7 @@
   </head>
   <body>
     <h1>Juan's Movie API</h1>
-    <p>The web application will provide users with access to information about different
-    movies, directors, and genres. Users will be able to sign up, update their
-    personal information, and create a list of their favorite movies.</p>
+    <p>The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
 
     <h2>Endpoints Table</h2>
 
@@ -21,182 +19,104 @@
           <th>Response</th>
         </tr>
       </thead>
-
       <tbody>
-        <!-- Movie Endpoints -->
+              <!-- Movie Endpoints -->
         <tr>
           <td>GET</td>
           <td>/movies</td>
-          <td>Get all movies</td>
+          <td>Get all movies.<br> <b>Response:</b> <br> <pre>[{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "title": "Inception", "director": "Christopher Nolan", "genre": "Science Fiction", "year": 2010, "description": "A thief who steals corporate secrets through the use of dream-sharing technology..." }]</pre></td>
         </tr>
 
         <tr>
           <td>GET</td>
           <td>/movies/:id</td>
-          <td>Get specific movie</td>
+          <td>Get specific movie.<br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "title": "Inception", "director": "Christopher Nolan", "genre": "Science Fiction", "year": 2010, "description": "A thief who steals corporate secrets through the use of dream-sharing technology..." }</pre></td>
         </tr>
 
         <tr>
           <td>POST</td>
           <td>/movies</td>
-          <td>Create a new movie. <br> 
-            <b>Request Body Example:</b><br>
-            <pre>{
-  "title": "Inception",
-  "director": "Christopher Nolan",
-  "genre": "Science Fiction",
-  "year": 2010,
-  "description": "A thief who steals corporate secrets through the use of dream-sharing technology..."
-}</pre>
-          </td>
+          <td>Create a new movie.<br> <b>Request Body Example:</b><br> <pre>{
+    "title": "Inception",
+    "director": "Christopher Nolan",
+    "genre": "Science Fiction",
+    "year": 2010,
+    "description": "A thief who steals corporate secrets through the use of dream-sharing technology..."
+  }</pre> <br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "title": "Inception", "director": "Christopher Nolan", "genre": "Science Fiction", "year": 2010, "description": "A thief who steals corporate secrets through the use of dream-sharing technology..." }</pre></td>
         </tr>
 
         <tr>
-          <td>PUT</td>
-          <td>/movies/:id</td>
-          <td>Update movie. <br>
-            <b>Request Body Example:</b><br>
-            <pre>{
-  "title": "Inception Updated",
-  "director": "Christopher Nolan",
-  "genre": "Science Fiction",
-  "year": 2010,
-  "description": "A thief who steals corporate secrets through the use of dream-sharing technology..."
-}</pre>
-          </td>
+            <td>PUT</td>
+            <td>/movies/:id</td>
+            <td>Update movie.<br> <b>Request Body Example:</b><br> <pre>{
+    "title": "Inception Updated",
+    "director": "Christopher Nolan",
+    "genre": "Science Fiction",
+    "year": 2010,
+    "description": "A thief who steals corporate secrets through the use of dream-sharing technology..."
+  }</pre> <br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "title": "Inception Updated", "director": "Christopher Nolan", "genre": "Science Fiction", "year": 2010, "description": "A thief who steals corporate secrets through the use of dream-sharing technology..." }</pre></td>
         </tr>
 
         <tr>
           <td>DELETE</td>
           <td>/movies/:id</td>
-          <td>Delete a movie</td>
+          <td>Delete a movie.<br> <b>Response:</b> <br> <pre>Movie was deleted.</pre></td>
         </tr>
 
-        <!-- Genre Endpoints -->
-        <tr>
-          <td>GET</td>
-          <td>/genres</td>
-          <td>Get all genres</td>
-        </tr>
-
-        <tr>
-          <td>GET</td>
-          <td>/genres/:name</td>
-          <td>Get specific genre</td>
-        </tr>
-
-        <tr>
-          <td>POST</td>
-          <td>/genres</td>
-          <td>Create a new genre</td>
-        </tr>
-
-        <tr>
-          <td>PUT</td>
-          <td>/genres/:name</td>
-          <td>Update genre</td>
-        </tr>
-
-        <tr>
-          <td>DELETE</td>
-          <td>/genres/:name</td>
-          <td>Delete a genre</td>
-        </tr>
-
-        <!-- Director Endpoints -->
-        <tr>
-          <td>GET</td>
-          <td>/directors</td>
-          <td>Get all directors</td>
-        </tr>
-
-        <tr>
-          <td>GET</td>
-          <td>/directors/:name</td>
-          <td>Get specific director</td>
-        </tr>
-
-        <tr>
-          <td>POST</td>
-          <td>/directors</td>
-          <td>Create a new director</td>
-        </tr>
-
-        <tr>
-          <td>PUT</td>
-          <td>/directors/:name</td>
-          <td>Update director</td>
-        </tr>
-
-        <tr>
-          <td>DELETE</td>
-          <td>/directors/:name</td>
-          <td>Delete a director</td>
-        </tr>
-
-        <!-- User Endpoints -->
+              <!-- User Endpoints -->
         <tr>
           <td>GET</td>
           <td>/users</td>
-          <td>Get all users</td>
+          <td>Get all users.<br> <b>Response:</b> <br> <pre>[{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "username": "johndoe", "email": "johndoe@example.com", "birthday": "1990-01-01" }]</pre></td>
         </tr>
 
         <tr>
           <td>GET</td>
           <td>/users/:id</td>
-          <td>Get specific user</td>
+          <td>Get specific user.<br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "username": "johndoe", "email": "johndoe@example.com", "birthday": "1990-01-01" }</pre></td>
         </tr>
 
         <tr>
           <td>POST</td>
           <td>/users</td>
-          <td>Create a new user. <br>
-            <b>Request Body Example:</b><br>
-            <pre>{
-  "username": "johndoe",
-  "password": "password123",
-  "email": "johndoe@example.com",
-  "birthday": "1990-01-01"
-}</pre>
-          </td>
+          <td>Create a new user.<br> <b>Request Body Example:</b><br> <pre>{
+    "username": "johndoe",
+    "password": "password123",
+    "email": "johndoe@example.com",
+    "birthday": "1990-01-01"
+  }</pre> <br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "username": "johndoe", "email": "johndoe@example.com", "birthday": "1990-01-01" }</pre></td>
         </tr>
 
         <tr>
           <td>PUT</td>
           <td>/users/:id</td>
-          <td>Update user. <br>
-            <b>Request Body Example:</b><br>
-            <pre>{
-  "username": "john_doe_updated",
-  "password": "newpassword123",
-  "email": "john_doe_updated@example.com",
-  "birthday": "1990-01-01"
-}</pre>
-          </td>
+          <td>Update user.<br> <b>Request Body Example:</b><br> <pre>{
+    "username": "john_doe_updated",
+    "password": "newpassword123",
+    "email": "john_doe_updated@example.com",
+    "birthday": "1990-01-01"
+  }</pre> <br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "username": "john_doe_updated", "email": "john_doe_updated@example.com", "birthday": "1990-01-01" }</pre></td>
         </tr>
 
         <tr>
           <td>DELETE</td>
           <td>/users/:id</td>
-          <td>Delete a user</td>
+          <td>Delete a user.<br> <b>Response:</b> <br> <pre>User was deleted.</pre></td>
         </tr>
 
-        <!-- User-Movie (Favorite Movies) Endpoints -->
+              <!-- User-Movie (Favorite Movies) Endpoints -->
         <tr>
           <td>POST</td>
           <td>/users/:id/favorites</td>
-          <td>Add a movie to user's favorites. <br>
-            <b>Request Body Example:</b><br>
-            <pre>{
-  "movieId": "60c72b2f4f1a4d3c4c8e5f3b"
-}</pre>
-          </td>
+          <td>Add a movie to user's favorites.<br> <b>Request Body Example:</b><br> <pre>{
+    "movieId": "60c72b2f4f1a4d3c4c8e5f3b"
+  }</pre> <br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "username": "johndoe", "email": "johndoe@example.com", "birthday": "1990-01-01", "favoriteMovies": ["60c72b2f4f1a4d3c4c8e5f3b"] }</pre></td>
         </tr>
 
         <tr>
           <td>DELETE</td>
           <td>/users/:id/favorites/:movieId</td>
-          <td>Remove a movie from user's favorites</td>
+          <td>Remove a movie from user's favorites.<br> <b>Response:</b> <br> <pre>{ "_id": "60c72b2f4f1a4d3c4c8e5f3b", "username": "johndoe", "email": "johndoe@example.com", "birthday": "1990-01-01", "favoriteMovies": [] }</pre></td>
         </tr>
       </tbody>
     </table>
