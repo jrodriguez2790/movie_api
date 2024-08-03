@@ -16,8 +16,9 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   birthday: { type: Date },
-  favoriteMovies: [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
+  favoritemovies: [{ type: Schema.Types.ObjectId, ref: 'Movie' }]
 });
+
 
 // Create the models from the schemas
 const Movie = mongoose.model('Movie', movieSchema);
