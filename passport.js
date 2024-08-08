@@ -19,9 +19,9 @@ passport.use(new LocalStrategy({
         return callback(null, false, { message: 'Incorrect username or password.' });
       }
 
-      if (user.password !== password) {  // Direct comparison (ideally, use bcrypt for hashing)
+      if (!user.validatePassword(password)) {  // Direct comparison (ideally, use bcrypt for hashing)
         console.log('incorrect password');
-        return callback(null, false, { message: 'Incorrect username or password.' });
+        return callback(null, false, { message: 'Incorrect password.' });
       }
 
       console.log('finished');
