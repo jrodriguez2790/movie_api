@@ -5,7 +5,11 @@ const Models = require('./models.js');
 const app = express();
 const { check, validationResult } = require('express-validator');
 
-mongoose.connect('mongodb://localhost:27017/movieDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//local database
+// mongoose.connect('mongodb://localhost:27017/movieDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+//online database
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const Movies = Models.Movie;
 const Users = Models.User;
