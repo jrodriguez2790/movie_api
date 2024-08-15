@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-              <!-- Movie Endpoints -->
+        <!-- Movie Endpoints -->
         <tr>
           <td>GET</td>
           <td>/movies</td>
@@ -63,7 +63,21 @@
           <td>Delete a movie.<br> <b>Response:</b> <br> <pre>Movie was deleted.</pre></td>
         </tr>
 
-              <!-- User Endpoints -->
+        <!-- Genre Endpoints -->
+        <tr>
+          <td>GET</td>
+          <td>/genres/:name</td>
+          <td>Get genre by name.<br> <b>Response:</b> <br> <pre>{ "name": "Thriller", "description": "Thriller is a genre characterized by excitement, suspense, and high levels of anticipation." }</pre></td>
+        </tr>
+
+        <!-- Director Endpoints -->
+        <tr>
+          <td>GET</td>
+          <td>/directors/:name</td>
+          <td>Get director by name.<br> <b>Response:</b> <br> <pre>{ "name": "Christopher Nolan", "bio": "Christopher Nolan is a British-American film director, producer, and screenwriter.", "birthYear": 1970, "deathYear": null }</pre></td>
+        </tr>
+
+        <!-- User Endpoints -->
         <tr>
           <td>GET</td>
           <td>/users</td>
@@ -104,7 +118,7 @@
           <td>Delete a user.<br> <b>Response:</b> <br> <pre>User was deleted.</pre></td>
         </tr>
 
-              <!-- User-Movie (Favorite Movies) Endpoints -->
+        <!-- User-Movie (Favorite Movies) Endpoints -->
         <tr>
           <td>POST</td>
           <td>/users/:id/favorites</td>
