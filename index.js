@@ -186,20 +186,35 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
 });
 
 // User-Movie (Favorite Movies) endpoints
-app.post('/users/:username/favoritesmovies', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ username: req.params.username }, {
-    $addToSet: { favoritemovies: req.body.movieId }
-  }, { new: true })
-    .then(updatedUser => res.json(updatedUser))
-    .catch(err => res.status(500).send('Error: ' + err));
+app.post('/users/:id/favorites', passport.authenticate('jwt', { session: false }), (req, res) => {
+  console.log('user Id:', req.params.id); // Log the username
+  console.log('movie Id:', req.body.movieId); // Log the movie ID
+  
+  Users.findByIdAndUpdate(
+    req.params.id,  // This should be an object
+    { $addToSet: { favoriteMovies: req.body.movieId } }, // $addToSet to avoid duplicates
+    { new: true } // Return the updated document
+  )
+  .then(updatedUser => res.json(updatedUser))
+  .catch(err => res.status(500).send('Error: ' + err));
+    console.error('Error in findByIdAndUpdate:', err);
+    res.status(500).send('Error: ' + err);
 });
 
-app.delete('/users/:username/favoritemovies/:movieId', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ username: req.params.username }, {
-    $pull: { favoritemovies: req.params.movieId }
-  }, { new: true })
-    .then(updatedUser => res.json(updatedUser))
-    .catch(err => res.status(500).send('Error: ' + err));
+app.delete('/users/:id/favorites/:movieId', passport.authenticate('jwt', { session: false }), (req, res) => {
+  console.log('username:', req.params.id); // Log the username
+  console.log('movie Id:', req.params.movieId); // Log the movie ID
+  
+  Users.findByIdAndUpdate(
+    req.params.id,  // This should be an object
+    { $pull: { favoriteMovies: req.params.movieId } }, // $pull to remove the movie ID
+    { new: true } // Return the updated document
+  )
+  .then(updatedUser => res.json(updatedUser))
+  .catch(err => {
+    console.error('Error in findByIdAndUpdate:', err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 // Default GET route
