@@ -22,12 +22,15 @@ const userSchema = new Schema({
 
 // add static method to hash password  
 userSchema.statics.hashPassword = (password) => {
+  if (!password) {
+    throw new Error('Password is required');
+  }
   return bcrypt.hashSync(password, 10);
 };
 
 // add method to validate password
 userSchema.methods.validatePassword = function(password) {
-  return bcrypt.compareSync(password, this.Password);
+  return bcrypt.compareSync(password, this.password);
 };
 
 // Create the models from the schemas
