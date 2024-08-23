@@ -68,7 +68,7 @@ app.delete('/movies/:id', passport.authenticate('jwt', { session: false }), (req
 
 // Genre Endpoints
 app.get('/genres/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ 'genre': req.params.name })
+  Movies.findOne({ 'genre.name': req.params.name })
     .then((movie) => {
       if (movie) {
         res.json(movie.genre);
