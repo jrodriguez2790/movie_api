@@ -102,12 +102,6 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 app.get('/users/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).send('Invalid user ID format');
-    }
-    
-    const userId = mongoose.Types.ObjectId(id);
-
     const user = await Users.findById(id);
     if (!user) {
       return res.status(404).send('User not found');
@@ -235,6 +229,10 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
 //});  
 
 app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  await Movies.findOne({_id: req.params.movieId})
+    .then((foundMovie) => {
+      console.log(foundMovie);
+    })
   await Users.findOneAndUpdate(
     { username: req.params.username },
     { $push: { favoritemovies: req.params.movieId } },
@@ -252,7 +250,7 @@ app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { se
   try {
     const updatedUser = await Users.findOneAndUpdate(
       { username: req.params.username },  // This should be an object
-      { $pull: { favoriteMovies: req.params.movieId } }, // $pull to remove the movie ID
+      { $pull: { favoritemovies: req.params.movieId } }, // $pull to remove the movie ID
       { new: true } // Return the updated document
   );
   if (!updatedUser) {
