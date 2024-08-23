@@ -7,10 +7,10 @@ const { check, validationResult } = require('express-validator');
 const cors = require('cors');
 
 const app = express();
-const { Types } = mongoose; //added this line to import 'Types' for ObjectId validation
+//const { Types } = mongoose; //added this line to import 'Types' for ObjectId validation
 
 //local database
-// mongoose.connect('mongodb://localhost:27017/movieDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://localhost:27017/movieDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 //online database
 mongoose.connect(process.env.CONNECTION_URI);
@@ -99,12 +99,26 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
     .catch(err => res.status(500).send('Error: ' + err));
 });
 
-app.get('/users/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findById(req.params.id)
-    .then(user => res.json(user))
-    .catch(err => res.status(500).send('Error: ' + err));
-});
+app.get('/users/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send('Invalid user ID format');
+    }
+    
+    const userId = mongoose.Types.ObjectId(id);
 
+    const user = await Users.findById(id);
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error: ' + err.message);
+  }
+});
+  
 app.post('/users',
   // Validation logic here for request
   [
@@ -211,26 +225,27 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
 
 // User-Movie (Favorite Movies) endpoints
 // Add a movie to a user's list of favorites
-app.post('/test/:username/movies/:movieId', (req, res) => {
-  console.log(req.params);
-  res.send('Test route working!');
-});
-  
+//app.post('/test/:username/movies/:movieId', (req, res) => {
+//  console.log(req.params);
+//  res.send('Test route working!');
+//});
+
+//app.post('/users/:username/movies/:movieId', (req, res) => {
+//    res.status(200).send('Test route working!');
+//});  
+
 app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    const updatedUser = await Users.findOneAndUpdate(
-      { username: req.params.username },
-      { $push: { favoriteMovies: req.params.movieId } },
-      { new: true } // This line makes sure that the updated document is returned
-    );
-    if (!updatedUser) {
-    return res.status(400).send('User not found');
-    }
-    res.json(updatedUser);
-  } catch(err) {
+  await Users.findOneAndUpdate(
+    { username: req.params.username },
+    { $push: { favoritemovies: req.params.movieId } },
+    { new: true }) // This line makes sure that the updated document is returned
+    .then((updatedUser) => {
+      res.json(updatedUser);
+    })
+    .catch((err) => {
     console.error(err);
     res.status(500).send('Error: ' + err);
-  }
+  });
 });
   
 app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -261,8 +276,15 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
+
+// Start the local server
+//const PORT = 8080;
+//app.listen(PORT, () => {
+//  console.log(`Server is running on http://localhost:${PORT}`);
+//});
+
 // Start the server
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
- console.log('Listening on Port ' + port);
+console.log('Listening on Port ' + port);
 });
