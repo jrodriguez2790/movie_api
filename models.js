@@ -5,7 +5,10 @@ const bcrypt = require('bcrypt');
 // Define the Movie schema
 const movieSchema = new Schema({
   title: { type: String, required: true },
-  director: { type: String, required: true },
+  director: {
+    name: { type: String, required: true },
+    bio: { type: String, required: true }
+  },
   genre: {
     name: { type: String, required: true },
     description: { type: String, required: true }
