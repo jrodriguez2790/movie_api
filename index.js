@@ -203,7 +203,7 @@ app.put('/users/:username',
 
 // Delete a user by username
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Users.findOneAndRemove({ username: req.params.username })
+  const user = await Users.findOneAndDelete({ username: req.params.username })
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.username + ' was not found');
