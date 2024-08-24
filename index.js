@@ -203,19 +203,19 @@ app.put('/users/:username',
 
 // Delete a user by username
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const user = await Users.findOneAndDelete({ username: req.params.username })
-    .then((user) => {
-      if (!user) {
-        res.status(400).send(req.params.username + ' was not found');
-      } else {
-        res.status(200).send(req.params.username + ' was deleted.');
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
+  try {
+    const user = await Users.findOneAndDelete({ username: req.params.username });
+    if (!user) {
+      return res.status(400).send(req.params.username + ' was not found');
+    } else {
+      return res.status(200).send(req.params.username + ' was deleted.');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  }
 });
+
 
 // User-Movie (Favorite Movies) endpoints
 // Add a movie to a user's list of favorites
@@ -245,23 +245,41 @@ app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { sess
     res.status(500).send('Error: ' + err);
   });
 });
-  
+
 app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    const updatedUser = await Users.findOneAndUpdate(
-      { username: req.params.username },  // This should be an object
-      { $pull: { favoritemovies: req.params.movieId } }, // $pull to remove the movie ID
-      { new: true } // Return the updated document
-  );
-  if (!updatedUser) {
-    return res.status(404).send('User not found');
-  }
-  res.json(updatedUser);
-} catch (err) {
-  console.error(err);
-  res.status(500).send('Error: ' + err);
-}
+  await Movies.findOne({_id: req.params.movieId})
+    .then((foundMovie) => {
+      console.log(foundMovie);
+    })
+  await Users.findOneAndDelete(
+    { username: req.params.username },
+    { $push: { favoritemovies: req.params.movieId } },
+    { new: true }) // This line makes sure that the updated document is returned
+    .then((updatedUser) => {
+      res.json(updatedUser);
+    })
+    .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
+
+//app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+//  try {
+//    const updatedUser = await Users.findOneAndUpdate(
+//      { username: req.params.username },  // This should be an object
+//      { $pull: { favoritemovies: req.params.movieId } }, // $pull to remove the movie ID
+//      { new: true } // Return the updated document
+//  );
+//  if (!updatedUser) {
+//    return res.status(404).send('User not found');
+//  }
+//  res.json(updatedUser);
+//} catch (err) {
+//  console.error(err);
+//  res.status(500).send('Error: ' + err);
+//}
+//});
 
 // Default GET route
 app.get('/', (req, res) => {
