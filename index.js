@@ -32,7 +32,7 @@ app.use(express.static('public'));
 let auth = require('./auth')(app);
 
 // Movies endpoints
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -112,56 +112,56 @@ app.get('/users/:id', passport.authenticate('jwt', { session: false }), async (r
     res.status(500).send('Error: ' + err.message);
   }
 });
-  
+
 app.post('/users',
   // Validation logic here for request
   [
-    check('username', 'Username is required').isLength({min: 5}),
+    check('username', 'Username is required').isLength({ min: 5 }),
     check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('password', 'Password is required').not().isEmpty(),
     check('email', 'Email does not appear to be valid').isEmail()
   ], async (req, res) => {
 
-  let errors = validationResult(req);
+    let errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
 
-  let hashedPassword = Users.hashPassword(req.body.password);
-  await Users.findOne({ username: req.body.username }) // Search to see if a user with the requested username already exists
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.username + ' already exists');
-      } else {
-        Users
-          .create({
-            username: req.body.username,
-            password: hashedPassword,
-            email: req.body.email,
-            birthday: req.body.birthday
-          })
-          .then((user) => { res.status(201).json(user) })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+    let hashedPassword = Users.hashPassword(req.body.password);
+    await Users.findOne({ username: req.body.username }) // Search to see if a user with the requested username already exists
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.username + ' already exists');
+        } else {
+          Users
+            .create({
+              username: req.body.username,
+              password: hashedPassword,
+              email: req.body.email,
+              birthday: req.body.birthday
+            })
+            .then((user) => { res.status(201).json(user) })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
 
-app.put('/users/:username', 
-  passport.authenticate('jwt', { session: false }), 
+app.put('/users/:username',
+  passport.authenticate('jwt', { session: false }),
   [
     check('username', 'Username is required').isLength({ min: 5 }),
     check('username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
     check('password', 'Password is required').not().isEmpty(),
     check('email', 'Email does not appear to be valid').isEmail()
-  ], 
+  ],
   async (req, res) => {
 
     // Handle validation errors
@@ -180,7 +180,7 @@ app.put('/users/:username',
 
     // Find the user by Username and update their details
     await Users.findOneAndUpdate(
-      { username: req.params.username }, 
+      { username: req.params.username },
       {
         $set: {
           username: req.body.username,
@@ -191,14 +191,14 @@ app.put('/users/:username',
       },
       { new: true } // Ensure the updated document is returned
     )
-    .then(updatedUser => {
-      res.json(updatedUser);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
+      .then(updatedUser => {
+        res.json(updatedUser);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  });
 
 
 // Delete a user by username
@@ -229,7 +229,7 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
 //});  
 
 app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Movies.findOne({_id: req.params.movieId})
+  await Movies.findOne({ _id: req.params.movieId })
     .then((foundMovie) => {
       console.log(foundMovie);
     })
@@ -241,13 +241,13 @@ app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { sess
       res.json(updatedUser);
     })
     .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Movies.findOne({_id: req.params.movieId})
+  await Movies.findOne({ _id: req.params.movieId })
     .then((foundMovie) => {
       console.log(foundMovie);
     })
@@ -259,9 +259,9 @@ app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { se
       res.json(updatedUser);
     })
     .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 //app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -301,6 +301,6 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0',() => {
-console.log('Listening on Port ' + port);
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
 });
