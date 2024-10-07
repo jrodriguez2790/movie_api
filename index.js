@@ -35,7 +35,7 @@ let auth = require('./auth')(app);
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movies) => {
-      res.status(201).json(movies);
+      res.status(200).json(movies); //changed 201 to 200
     })
     .catch((error) => {
       res.status(500).send('Error: ' + error);
