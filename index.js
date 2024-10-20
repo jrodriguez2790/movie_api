@@ -251,9 +251,9 @@ app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { se
     .then((foundMovie) => {
       console.log(foundMovie);
     })
-  await Users.findOneAndDelete(
+  await Users.findOneAndUpdate(
     { username: req.params.username },
-    { $push: { favoritemovies: req.params.movieId } },
+    { $pull: { favoritemovies: req.params.movieId } },
     { new: true }) // This line makes sure that the updated document is returned
     .then((updatedUser) => {
       res.json(updatedUser);
